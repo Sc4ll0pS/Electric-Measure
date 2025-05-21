@@ -29,7 +29,7 @@ namespace Electric_Measure
         double vat;
         double totalcost;
 
-        //automatic subtype
+        //automatic create subtype
         Dictionary<string, List<string>> subTypeOptions = new Dictionary<string, List<string>>()
         {
             { "Type 1 Residential Service", new List<string> { "1.1 Normal tariff with consumption not exceeding 150 kWh per month", "1.2 Normal tariff with consuption exceeeding 150 kWh per month", "1.3 Time of Use Tariff : TOU Tariff" } },
@@ -42,6 +42,7 @@ namespace Electric_Measure
             { "Type 8 Temporary Tariff", new List<string> { "Temporary Tariff" } },
         };
 
+        //output result
         void ShowFinalBill(double basecost, double ft, double service)
         {
             basecost += service;
@@ -65,7 +66,7 @@ namespace Electric_Measure
         {
             string selectedType = typedbox.SelectedItem?.ToString();
 
-
+            //add range from line 32 - 44 to subtype
             if (selectedType != null && subTypeOptions.ContainsKey(selectedType))
             {
                 subdbox.Items.Clear();
@@ -77,17 +78,20 @@ namespace Electric_Measure
                 subdbox.Items.Clear();
             }
 
+            //update after reselect type
             UpdateOffOnPeakVisibility();
             UpdateVoltageVisibility();
         }
 
         private void subdbox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //update after reselect type
             UpdateOffOnPeakVisibility();
             UpdateVoltageVisibility();
 
         }
 
+        //enable and disable textbox
         private void UpdateOffOnPeakVisibility()
         {
             typeindex = typedbox.SelectedIndex;
@@ -110,6 +114,7 @@ namespace Electric_Measure
                     break;
 
                 case (2, 0):
+                case (4, 0):
                     txboffpeak.Enabled = false;
                     lboffpeak.Enabled = false;
                     txbdmunit.Enabled = true;
@@ -123,6 +128,8 @@ namespace Electric_Measure
 
                 case (2, 1):
                 case (3, 1):
+                case (4, 1):
+                case (5, 1):
                     txboffpeak.Enabled = true;
                     lboffpeak.Enabled = true;
                     txbdmunit.Enabled = true;
@@ -145,7 +152,7 @@ namespace Electric_Measure
                     lbdmoffpeak.Enabled = false;
                     lbdmpp.Enabled = true;
                     break;
-                
+
                 default:
                     txboffpeak.Enabled = false;
                     lboffpeak.Enabled = false;
@@ -163,6 +170,7 @@ namespace Electric_Measure
             }
         }
 
+        //hide and show radio button
         private void UpdateVoltageVisibility()
         {
             switch ((typeindex, subtypeindex))
@@ -237,7 +245,7 @@ namespace Electric_Measure
             }
 
 
-            if (txbdmpp.Enabled) 
+            if (txbdmpp.Enabled)
             {
                 if (string.IsNullOrWhiteSpace(txbdmpp.Text) || !Int32.TryParse(txbdmpp.Text, out ppunit) || ppunit == 0)
                 {
@@ -252,8 +260,8 @@ namespace Electric_Measure
                 typeCalcs[typeindex]?.Invoke();
             }
 
-            else 
-            { 
+            else
+            {
                 MessageBox.Show("Please select type!", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -551,22 +559,210 @@ namespace Electric_Measure
 
         private void typ5cal()
         {
+            if (subdbox.SelectedIndex == 0)
+            {
+                if (rd12V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 3.1751) + (dmunit * 276.64);
 
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd24V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 3.1471) + (dmunit * 256.07);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd69V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 3.1097) + (dmunit * 220.56);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+            }
+
+            if (subdbox.SelectedIndex == 1)
+            {
+                if (rd12V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.3297) + (opunit * 2.6369) + (dmunit * 210.00);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd24V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.1839) + (opunit * 2.6037) + (dmunit * 132.93);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd69V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.1025) + (opunit * 2.5849) + (dmunit * 74.14);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+            }
         }
 
+        //Type 6
         private void typ6cal()
         {
+            //6.1
+            if (subdbox.SelectedIndex == 0)
+            {
+                if (rd12V.Checked)
+                {
+                    service = 20.00;
+                    ft = unit * 0.20;
+                    basecost = 0;
+                    int remaining = unit;
 
+                    var tiers = new List<(int limit, double rate)>
+                    {
+                    (10,  2.8013),
+                    (int.MaxValue, 3.8919)
+                    };
+                        
+                    foreach (var (limit, rate) in tiers)
+                    {
+                        if (remaining <= 0) break;
+
+                        int used = Math.Min(remaining, limit);
+                        basecost += used * rate;
+                        remaining -= used;
+                    }
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd24V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 3.5849);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd69V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 3.4149);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+            }
+
+            //6.2
+            if (subdbox.SelectedIndex == 1)
+            {
+                if (rd12V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.3297) + (opunit * 2.6369) + (dmunit * 210.00);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd24V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.1839) + (opunit * 2.6037) + (dmunit * 132.93);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd69V.Checked)
+                {
+                    service = 312.24;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.1025) + (opunit * 2.5849) + (dmunit * 74.14);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+            }
         }
 
+        //Type 7
         private void typ7cal()
         {
+            //type 7.1
+            if (subdbox.SelectedIndex == 0)
+            {
+                service = 115.16;
+                ft = unit * 0.20;
+                basecost = 0;
+                int remaining = unit;
+
+                var tiers = new List<(int limit, double rate)>
+                    {
+                    (100,  2.0889),
+                    (int.MaxValue, 3.2405)
+                    };
+
+                foreach (var (limit, rate) in tiers)
+                {
+                    if (remaining <= 0) break;
+
+                    int used = Math.Min(remaining, limit);
+                    basecost += used * rate;
+                    remaining -= used;
+                }
+
+                ShowFinalBill(basecost, ft, service);
+            }
+
+            //type 7.2
+            if (subdbox.SelectedIndex == 1)
+            {
+                if (rd12V.Checked)
+                {
+                    service = 204.07;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.3297) + (opunit * 2.6369) + (dmunit * 210.00);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+
+                else if (rd24V.Checked)
+                {
+                    service = 204.07;
+                    ft = (unit) * 0.20;
+                    basecost = (unit * 4.1839) + (opunit * 2.6037) + (dmunit * 132.93);
+
+                    ShowFinalBill(basecost, ft, service);
+                }
+            }
 
         }
 
+        //type 8
         private void typ8cal()
         {
+            service = 204.07;
+            ft = (unit) * 0.20;
+            basecost = (unit * 6.8025);
 
+            ShowFinalBill(basecost, ft, service);
         }
 
     }
