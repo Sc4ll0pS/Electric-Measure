@@ -15,7 +15,7 @@ namespace Electric_Measure
 
     public partial class Menu : Form
     {
-        //declaration
+        // declaration
         int typeindex;
         int subtypeindex;
         int unit;
@@ -29,7 +29,7 @@ namespace Electric_Measure
         double vat;
         double totalcost;
 
-        //automatic create subtype
+        // automatic create subtype
         Dictionary<string, List<string>> subTypeOptions = new Dictionary<string, List<string>>()
         {
             { "Type 1 Residential Service", new List<string> { "1.1 Normal tariff with consumption not exceeding 150 kWh per month", "1.2 Normal tariff with consuption exceeeding 150 kWh per month", "1.3 Time of Use Tariff : TOU Tariff" } },
@@ -42,13 +42,15 @@ namespace Electric_Measure
             { "Type 8 Temporary Tariff", new List<string> { "Temporary Tariff" } },
         };
 
-        //output result
+        // output result
         void ShowFinalBill(double basecost, double ft, double service)
         {
+            // calculate
             basecost += service;
             vat = (basecost + ft) * 0.07;
             totalcost = Math.Round(basecost + ft + vat, 2);
 
+            // output
             MessageBox.Show(
                 $"Total = {totalcost} Base Tariff = {basecost} Ft = {ft} Vat = {vat}",
                 "Information",
@@ -66,7 +68,7 @@ namespace Electric_Measure
         {
             string selectedType = typedbox.SelectedItem?.ToString();
 
-            //add range from line 32 - 44 to subtype
+            // add range from line 32 - 44 to subtype
             if (selectedType != null && subTypeOptions.ContainsKey(selectedType))
             {
                 subdbox.Items.Clear();
@@ -78,20 +80,20 @@ namespace Electric_Measure
                 subdbox.Items.Clear();
             }
 
-            //update after reselect type
+            // update after reselect type
             UpdateOffOnPeakVisibility();
             UpdateVoltageVisibility();
         }
 
         private void subdbox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //update after reselect type
+            // update after reselect type
             UpdateOffOnPeakVisibility();
             UpdateVoltageVisibility();
 
         }
 
-        //enable and disable textbox
+        // enable and disable textbox
         private void UpdateOffOnPeakVisibility()
         {
             typeindex = typedbox.SelectedIndex;
@@ -170,7 +172,7 @@ namespace Electric_Measure
             }
         }
 
-        //hide and show radio button
+        // hide and show radio button
         private void UpdateVoltageVisibility()
         {
             switch ((typeindex, subtypeindex))
@@ -204,6 +206,7 @@ namespace Electric_Measure
             }
         }
 
+        // exit button
         private void btnexit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -211,12 +214,14 @@ namespace Electric_Measure
 
         private void btnstart_Click(object sender, EventArgs e)
         {
+            // check and convert unit
             if (string.IsNullOrWhiteSpace(txbunit.Text) || !Int32.TryParse(txbunit.Text, out unit) || unit == 0)
             {
                 MessageBox.Show("Please enter a valid unit greater than 0.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            // check and convert off peak unit
             if (txboffpeak.Enabled)
             {
                 if (string.IsNullOrWhiteSpace(txboffpeak.Text) || !Int32.TryParse(txboffpeak.Text, out opunit) || opunit == 0)
@@ -226,6 +231,7 @@ namespace Electric_Measure
                 }
             }
 
+            // check and convert demand unit
             if (txbdmunit.Enabled)
             {
                 if (string.IsNullOrWhiteSpace(txbdmunit.Text) || !Int32.TryParse(txbdmunit.Text, out dmunit) || dmunit == 0)
@@ -235,6 +241,7 @@ namespace Electric_Measure
                 }
             }
 
+            // check and convert demand off peak
             if (txbdmoffpeak.Enabled)
             {
                 if (string.IsNullOrWhiteSpace(txbdmoffpeak.Text) || !Int32.TryParse(txbdmoffpeak.Text, out dmopunit) || dmopunit == 0)
@@ -244,7 +251,7 @@ namespace Electric_Measure
                 }
             }
 
-
+            // check and convert demand partial peak
             if (txbdmpp.Enabled)
             {
                 if (string.IsNullOrWhiteSpace(txbdmpp.Text) || !Int32.TryParse(txbdmpp.Text, out ppunit) || ppunit == 0)
@@ -254,12 +261,14 @@ namespace Electric_Measure
                 }
             }
 
+            // call private void typ(type)cal
             Action[] typeCalcs = { typ1cal, typ2cal, typ3cal, typ4cal, typ5cal, typ6cal, typ7cal, typ8cal };
             if (typeindex >= 0 && typeindex <= 7)
             {
                 typeCalcs[typeindex]?.Invoke();
             }
 
+            // output error
             else
             {
                 MessageBox.Show("Please select type!", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -267,8 +276,11 @@ namespace Electric_Measure
 
 
         }
+
+        // Type 1
         private void typ1cal()
         {
+            // 1.1
             if (subdbox.SelectedIndex == 0)
             {
                 service = 8.19;
@@ -300,6 +312,7 @@ namespace Electric_Measure
 
             }
 
+            // 1.2
             else if (subdbox.SelectedIndex == 1)
             {
                 service = 24.62;
@@ -327,6 +340,7 @@ namespace Electric_Measure
 
             }
 
+            // 1.3
             else if (subdbox.SelectedIndex == 2)
             {
                 if (rd24V.Checked)
@@ -351,8 +365,10 @@ namespace Electric_Measure
             }
         }
 
+        // Type 2
         private void typ2cal()
         {
+            // 2.1
             if (subdbox.SelectedIndex == 0)
             {
                 if (rd24V.Checked)
@@ -393,6 +409,7 @@ namespace Electric_Measure
                 }
             }
 
+            // 2.2
             else if (subdbox.SelectedIndex == 1)
             {
                 if (rd24V.Checked)
@@ -418,8 +435,10 @@ namespace Electric_Measure
             }
         }
 
+        // Type 3
         private void typ3cal()
         {
+            // 3.1
             if (subdbox.SelectedIndex == 0)
             {
                 if (rd12V.Checked)
@@ -449,6 +468,7 @@ namespace Electric_Measure
                 }
             }
 
+            // 3.2
             else if (subdbox.SelectedIndex == 1)
             {
                 if (rd12V.Checked)
@@ -479,8 +499,11 @@ namespace Electric_Measure
                 }
             }
         }
+
+        // Type 4
         private void typ4cal()
         {
+            // 4.1
             if (subdbox.SelectedIndex == 0)
             {
                 if (rd12V.Checked)
@@ -526,6 +549,7 @@ namespace Electric_Measure
                 }
             }
 
+            // 4.2
             else if (subdbox.SelectedIndex == 1)
             {
                 if (rd12V.Checked)
@@ -557,8 +581,10 @@ namespace Electric_Measure
             }
         }
 
+        // Type 5
         private void typ5cal()
         {
+            // 5.1
             if (subdbox.SelectedIndex == 0)
             {
                 if (rd12V.Checked)
@@ -589,6 +615,7 @@ namespace Electric_Measure
                 }
             }
 
+            // 5.2
             if (subdbox.SelectedIndex == 1)
             {
                 if (rd12V.Checked)
@@ -620,10 +647,10 @@ namespace Electric_Measure
             }
         }
 
-        //Type 6
+        // Type 6
         private void typ6cal()
         {
-            //6.1
+            // 6.1
             if (subdbox.SelectedIndex == 0)
             {
                 if (rd12V.Checked)
@@ -670,7 +697,7 @@ namespace Electric_Measure
                 }
             }
 
-            //6.2
+            // 6.2
             if (subdbox.SelectedIndex == 1)
             {
                 if (rd12V.Checked)
@@ -702,10 +729,10 @@ namespace Electric_Measure
             }
         }
 
-        //Type 7
+        // Type 7
         private void typ7cal()
         {
-            //type 7.1
+            // 7.1
             if (subdbox.SelectedIndex == 0)
             {
                 service = 115.16;
@@ -731,7 +758,7 @@ namespace Electric_Measure
                 ShowFinalBill(basecost, ft, service);
             }
 
-            //type 7.2
+            // 7.2
             if (subdbox.SelectedIndex == 1)
             {
                 if (rd12V.Checked)
@@ -755,7 +782,7 @@ namespace Electric_Measure
 
         }
 
-        //type 8
+        // Type 8
         private void typ8cal()
         {
             service = 204.07;
