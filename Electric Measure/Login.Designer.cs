@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.Login_btn = new System.Windows.Forms.Button();
-            this.txbuser = new System.Windows.Forms.TextBox();
-            this.txbpass = new System.Windows.Forms.TextBox();
+            this.txtuser = new System.Windows.Forms.TextBox();
+            this.txtpass = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Reset_btn = new System.Windows.Forms.Button();
@@ -48,20 +48,20 @@
             this.Login_btn.UseVisualStyleBackColor = true;
             this.Login_btn.Click += new System.EventHandler(this.Login_btn_Click);
             // 
-            // txbuser
+            // txtuser
             // 
-            this.txbuser.Location = new System.Drawing.Point(72, 30);
-            this.txbuser.Name = "txbuser";
-            this.txbuser.Size = new System.Drawing.Size(229, 20);
-            this.txbuser.TabIndex = 0;
+            this.txtuser.Location = new System.Drawing.Point(72, 30);
+            this.txtuser.Name = "txtuser";
+            this.txtuser.Size = new System.Drawing.Size(229, 20);
+            this.txtuser.TabIndex = 0;
             // 
-            // txbpass
+            // txtpass
             // 
-            this.txbpass.Location = new System.Drawing.Point(72, 70);
-            this.txbpass.Name = "txbpass";
-            this.txbpass.Size = new System.Drawing.Size(229, 20);
-            this.txbpass.TabIndex = 1;
-            this.txbpass.UseSystemPasswordChar = true;
+            this.txtpass.Location = new System.Drawing.Point(72, 70);
+            this.txtpass.Name = "txtpass";
+            this.txtpass.Size = new System.Drawing.Size(229, 20);
+            this.txtpass.TabIndex = 1;
+            this.txtpass.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -111,8 +111,8 @@
             this.Controls.Add(this.Reset_btn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txbpass);
-            this.Controls.Add(this.txbuser);
+            this.Controls.Add(this.txtpass);
+            this.Controls.Add(this.txtuser);
             this.Controls.Add(this.Login_btn);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Login";
@@ -125,8 +125,8 @@
         #endregion
 
         private System.Windows.Forms.Button Login_btn;
-        private System.Windows.Forms.TextBox txbuser;
-        private System.Windows.Forms.TextBox txbpass;
+        private System.Windows.Forms.TextBox txtuser;
+        private System.Windows.Forms.TextBox txtpass;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Reset_btn;
