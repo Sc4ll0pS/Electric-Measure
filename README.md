@@ -4,7 +4,7 @@ A Windows Forms application developed in C# that calculates electricity bills ba
 
 ---
 
-Features
+## Features
 
 - Fully implemented tariff calculations
 - Calculates base cost, service charge, fuel adjustment charge (Ft), VAT, and total cost.
@@ -13,7 +13,7 @@ Features
 
 ---
 
-Technologies Used
+## Technologies Used
 
 - C# (.NET Framework)
 - SQLite
@@ -22,7 +22,7 @@ Technologies Used
 
 ---
 
-How to Use
+## How to Use
 
 1. Select the **Tariff Type** from the dropdown.
 2. Choose the relevant **Sub-type**.
@@ -33,18 +33,13 @@ How to Use
 
 ---
 
-Status
+## Future Improvements
 
-- All tariff types and subtypes from Type 1 to Type 4 are implemented.
-- Types 5 to 8 are pending and planned for future development.
-
-Future Improvements
-
-- Complete implementation of Types 5 to 8 tariffs.
 - Improve UI with detailed bill export or print options.
 - Add data persistence for billing history.
-- Consider localization support.
 
-License
+---
+
+## License
 
 This project is for educational purposes. Modify and extend as needed.
