@@ -51,12 +51,8 @@ namespace Electric_Measure
             totalcost = Math.Round(basecost + ft + vat, 2);
 
             // output
-            MessageBox.Show(
-                $"Total = {totalcost} Base Tariff = {basecost} Ft = {ft} Vat = {vat}",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            Result result = new Result(totalcost, basecost, ft, vat);
+            result.Show();
         }
 
         public Menu()

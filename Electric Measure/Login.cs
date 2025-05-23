@@ -28,14 +28,14 @@ namespace Electric_Measure
 
             if (user == "" || pwd == "")
             {
-                MessageBox.Show("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter user and password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtuser.Focus();
                 return;
             }
 
             if (!UserExists(user))
             {
-                MessageBox.Show("ชื่อผู้ใช้ไม่พบในระบบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("User not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtuser.Focus();
                 return;
             }
@@ -45,7 +45,7 @@ namespace Electric_Measure
 
             if (storedHashedPwd == hashedInputPwd)
             {
-                MessageBox.Show($"Welcome {user}!!", "Login successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Welcome to Electric Measure {user}!!", "Login successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Menu menu = new Menu();
                 this.Hide();
                 menu.FormClosed += (s, args) => this.Close();
@@ -53,7 +53,7 @@ namespace Electric_Measure
             }
             else
             {
-                MessageBox.Show("รหัสผ่านไม่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Wrong password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtpass.Clear();
                 txtpass.Focus();
             }
